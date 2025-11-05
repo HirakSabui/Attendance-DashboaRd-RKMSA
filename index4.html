@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff Attendance Management System</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Login Section -->
+    <div id="loginSection">
+        <div class="login-card">
+            <h2>Ramakrishna Mission Shilpapitha<br>
+                <small style="color: #666; font-size: 0.8em;">Belgharia, Kolkata 700056</small><br>
+                <small style="color: #667eea; font-size: 0.9em;">Staff Attendance Management System</small>
+            </h2>
+            <form onsubmit="login(event)">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" required placeholder="Enter your username">
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" required placeholder="Enter your password">
+                </div>
+                <button type="submit" class="login-btn">Login</button>
+            </form>
+            <div id="loginError"></div>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div id="mainContainer">
+        <!-- Header -->
+        <div class="header">
+            <h1>Staff Attendance Management</h1>
+            <div class="header-right">
+                <div class="user-info">
+                    <span>Welcome, <strong id="currentUser">Admin</strong></span>
+                </div>
+                <button class="logout-btn" onclick="logout()">Logout</button>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="nav-container">
+            <div class="nav-tabs">
+                <button class="nav-tab active" onclick="showSection('attendance')">Attendance Report</button>
+                <button class="nav-tab" onclick="showSection('employees')">Employee Management</button>
+                <button class="nav-tab" onclick="showSection('editAttendance')">Edit Attendance</button>
+                <button class="nav-tab" onclick="showSection('manualEntry')">Manual Entry</button>
+            </div>
+        </div>
+
+        <!-- Dashboard -->
+        <div class="dashboard">
+            <div class="dashboard-card">
+                <h3 id="totalEmployees">--</h3>
+                <p>Total Employees</p>
+            </div>
+            <div class="dashboard-card">
+                <h3 id="presentToday">--</h3>
+                <p>Present Today</p>
+            </div>
+            <div class="dashboard-card">
+                <h3 id="averageAttendance">--</h3>
+                <p>Average Attendance</p>
+            </div>
+            <div class="dashboard-card">
+                <h3 id="pendingLeaves">--</h3>
+                <p>Pending Leaves</p>
+            </div>
+        </div>
+
+        <!-- Attendance Report Section -->
+        <div id="attendanceSection" class="content-section active">
+            <div class="section-card">
+                <h3>Attendance Report Generator</h3>
+                <div class="form-row">
+                    <input type="text" id="projectId" placeholder="Project ID" value="1">
+                    <input type="text" id="projectCode" placeholder="Project Code" value="RMS001">
+                    <select id="monthSelect">
+                        <option value="01">January</option>
+                        <option value="02">February</option>
+                        <option value="03">March</option>
+                        <option value="04">April</option>
+                        <option value="05">May</option>
+                        <option value="06">June</option>
+                        <option value="07">July</option>
+                        <option value="08">August</option>
+                        <option value="09">September</option>
+                        <option value="10">October</option>
+                        <option value="11">November</option>
+                        <option value="12">December</option>
+                    </select>
+                    <select id="yearSelect">
+                        <option value="2023">2023</option>
+                        <option value="2024">2024</option>
+                        <option value="2025">2025</option>
+                        <option value="2026">2026</option>
+                    </select>
+                </div>
+                <button class="btn btn-primary" onclick="fetchAttendance()">Fetch Attendance Data</button>
+            </div>
+
+            <!-- Designation Filter Section -->
+            <div class="designation-filter">
+                <h4>Filter by Staff Category & Designation</h4>
+                <div class="form-row">
+                    <select id="designationFilter" onchange="updateDesignationFilter()">
+                        <option value="all">All Staff (54 Members)</option>
+                        <option value="permanent-staff">Permanent Staff Only (40 Members)</option>
+                        <option value="part-time-staff">Part-time Staff Only (14 Members)</option>
+                        <option value="lecturer">Lecturer Only</option>
+                        <option value="workshop-instructor">Workshop Instructor Only</option>
+                        <option value="office-support-staff">Office Support Staff (Store Keeper, Store Assistant, Junior Clerk, Typist, Laboratory Assistant)</option>
+                        <option value="group-d-staff">Group D Staff Only</option>
+                    </select>
+                    <button class="btn btn-success" onclick="applyDesignationFilter()">Apply Filter & Generate Report</button>
+                </div>
+                <div id="filterInfo" class="filter-info" style="display: none;">
+                    <strong>Active Filter:</strong> <span id="currentFilter">All Staff</span><br>
+                    <strong>Filtered Employees:</strong> <span id="filteredCount">0</span>
+                </div>
+            </div>
+
+            <!-- Staff List Actions -->
+            <div class="staff-list-actions no-print">
+                <button onclick="generatePermanentStaffPDF()" class="btn btn-primary">
+                    Generate Permanent Staff List
+                </button>
+                <button onclick="generatePartTimeStaffPDF()" class="btn btn-primary">
+                    Generate Part-Time Staff List
+                </button>
+            </div>
+
+            <!-- Quick Edit Panel -->
+            <div class="quick-edit-panel">
+                <h4>Quick Edit Attendance</h4>
+                <form id="quickEditForm" onsubmit="event.preventDefault(); quickUpdateAttendance();">
+                    <div class="form-row">
+                        <input type="text" id="quickEditEmployeeId" placeholder="Employee ID" required>
+                        <input type="date" id="quickEditDate" required>
+                        <select id="quickEditType" onchange="toggleQuickEditTimeFields()">
+                            <option value="present">Present</option>
+                            <option value="absent">Absent</option>
+                            <option value="on-duty">On Duty</option>
+                            <option value="night-duty">Night Duty</option>
+                            <option value="casual-leave">Casual Leave (CL)</option>
+                            <option value="medical-leave">Medical Leave (ML)</option>
+                            <option value="half-casual-leave">Half Casual Leave (HCL)</option>
+                            <option value="earn-leave">Earn Leave (EL)</option>
+                        </select>
+                    </div>
+                    <div class="form-row" id="quickTimeFields">
+                        <input type="time" id="quickEditInTime" placeholder="In Time" step="1">
+                        <input type="time" id="quickEditOutTime" placeholder="Out Time" step="1">
+                        <input type="text" id="quickEditRemarks" placeholder="Remarks">
+                    </div>
+                    <button type="submit" class="btn btn-warning">Quick Update</button>
+                </form>
+            </div>
+
+            <!-- Manual Entry Panel -->
+            <div class="manual-entry-panel">
+                <h4>Manual Attendance Entry</h4>
+                <div class="form-row">
+                    <input type="text" id="manualEmpId" placeholder="Employee ID" required>
+                    <input type="date" id="manualEntryDate" required>
+                    <select id="manualEntryType">
+                        <option value="in">Punch In</option>
+                        <option value="out">Punch Out</option>
+                        <option value="both">Both In & Out</option>
+                    </select>
+                </div>
+                <div class="form-row" id="manualTimeFields">
+                    <input type="time" id="manualInTime" placeholder="In Time" step="1">
+                    <input type="time" id="manualOutTime" placeholder="Out Time" step="1">
+                    <input type="text" id="manualRemarks" placeholder="Manual Entry Remarks">
+                </div>
+                <button class="btn btn-info" onclick="addManualAttendance()">Add Manual Entry</button>
+            </div>
+
+            <div id="reportContainer"></div>
+        </div>
+
+        <!-- Employee Management Section -->
+        <div id="employeeSection" class="content-section">
+            <div class="section-card">
+                <h3>Employee Management</h3>
+                <div class="employee-management-actions">
+                    <button class="btn btn-success" onclick="showAddEmployeeModal()">Add New Employee</button>
+                    <button class="btn btn-warning" onclick="refreshEmployeeData()">Refresh Employee Data</button>
+                </div>
+                <div id="employeeList">
+                    <p class="loading">Loading employee data...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Edit Attendance Section -->
+        <div id="editAttendanceSection" class="content-section">
+            <div class="section-card">
+                <h3>Edit Attendance & Leave Management</h3>
+                <div class="edit-form">
+                    <h4>Advanced Attendance Editor</h4>
+                    <div class="form-row">
+                        <input type="text" id="editEmployeeId" placeholder="Employee ID" required>
+                        <input type="date" id="editDate" required>
+                        <select id="editType" onchange="toggleTimeFields()">
+                            <option value="present">Present</option>
+                            <option value="absent">Absent</option>
+                            <option value="on-duty">On Duty</option>
+                            <option value="night-duty">Night Duty</option>
+                            <option value="casual-leave">Casual Leave</option>
+                            <option value="medical-leave">Medical Leave</option>
+                            <option value="half-casual-leave">Half Casual Leave</option>
+                            <option value="earn-leave">Earn Leave</option>
+                        </select>
+                    </div>
+                    <div id="timeFields" class="form-row">
+                        <input type="time" id="editInTime" placeholder="In Time" step="1">
+                        <input type="time" id="editOutTime" placeholder="Out Time" step="1">
+                    </div>
+                    <div class="form-row">
+                        <textarea id="editReason" placeholder="Detailed Reason/Remarks" rows="3"></textarea>
+                    </div>
+                    <div class="button-group">
+                        <button class="btn btn-warning" onclick="updateAttendance()">Update Attendance</button>
+                        <button class="btn btn-info" onclick="previewChanges()">Preview Changes</button>
+                    </div>
+                </div>
+                <div id="editResult"></div>
+                <div id="attendancePreview"></div>
+            </div>
+        </div>
+
+        <!-- Manual Entry Section -->
+        <div id="manualEntrySection" class="content-section">
+            <div class="section-card">
+                <h3>Manual Attendance Entry</h3>
+                <p style="color: #666; margin-bottom: 1rem;">Use this section to manually add missing punch in/out times</p>
+                <div class="form-row">
+                    <input type="text" id="manualEmployeeId" placeholder="Employee ID" required>
+                    <input type="date" id="manualDate" required>
+                    <select id="manualPunchType">
+                        <option value="I">Punch In</option>
+                        <option value="O">Punch Out</option>
+                    </select>
+                    <input type="time" id="manualTime" required step="1">
+                </div>
+                <div class="form-row">
+                    <textarea id="manualEntryRemarks" placeholder="Manual Entry Reason" rows="2"></textarea>
+                </div>
+                <button class="btn btn-success" onclick="addManualEntry()">Add Manual Entry</button>
+                <div id="manualResult"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Employee Modal -->
+    <div id="addEmployeeModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('addEmployeeModal')">&times;</span>
+            <h3>Add New Employee</h3>
+            <div class="form-row">
+                <input type="text" id="newEmployeeId" placeholder="Employee ID" required>
+                <input type="text" id="newEmployeeName" placeholder="Full Name" required>
+            </div>
+            <div class="form-row">
+                <input type="text" id="newEmployeeDept" placeholder="Department">
+                <input type="text" id="newEmployeeDesig" placeholder="Designation">
+            </div>
+            <div class="form-row">
+                <input type="text" id="newEmployeeStatus" placeholder="Status (Active)" value="Active">
+                <input type="text" id="newEmployeeWorkerStatus" placeholder="Worker Status (U)" value="U">
+            </div>
+            <div class="form-row">
+                <input type="text" id="newEmployeePhotoURL" placeholder="Photo URL (optional)">
+            </div>
+            <button class="btn btn-success" onclick="addEmployee()">Add Employee</button>
+            <div id="addEmployeeResult"></div>
+        </div>
+    </div>
+
+    <!-- Edit Employee Modal -->
+    <div id="editEmployeeModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('editEmployeeModal')">&times;</span>
+            <h3>Edit Employee</h3>
+            <div class="form-row">
+                <input type="text" id="editEmpId" placeholder="Employee ID" readonly>
+                <input type="text" id="editEmpName" placeholder="Full Name" required>
+            </div>
+            <div class="form-row">
+                <input type="text" id="editEmpDept" placeholder="Department">
+                <input type="text" id="editEmpDesig" placeholder="Designation">
+            </div>
+            <div class="form-row">
+                <select id="editEmpType">
+                    <option value="Full-Time">Full-Time</option>
+                    <option value="Part-Time">Part-Time</option>
+                </select>
+            </div>
+            <button class="btn btn-warning" onclick="updateEmployee()">Update Employee</button>
+            <div id="editEmployeeResult"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

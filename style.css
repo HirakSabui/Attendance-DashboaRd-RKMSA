@@ -1,0 +1,901 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+}
+
+/* Login Section Styles */
+#loginSection {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.login-card {
+  background: white;
+  padding: 2rem;
+  border-radius: 15px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+}
+
+.login-card h2 {
+  color: #333;
+  margin-bottom: 2rem;
+  font-size: 1.5rem;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+  text-align: left;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #555;
+  font-weight: 600;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 12px 15px;
+  border: 2px solid #e1e5e9;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: border-color 0.3s;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #667eea;
+}
+
+.login-btn {
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.login-btn:hover {
+  transform: translateY(-2px);
+}
+
+/* Main Container Styles */
+#mainContainer {
+  display: none;
+  min-height: 100vh;
+}
+
+/* Header Styles */
+.header {
+  background: white;
+  padding: 1rem 2rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header h1 {
+  color: #333;
+  font-size: 1.5rem;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #666;
+}
+
+.logout-btn {
+  padding: 0.5rem 1rem;
+  background: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.logout-btn:hover {
+  background: #c82333;
+}
+
+/* Navigation Styles */
+.nav-container {
+  background: white;
+  padding: 0 2rem;
+  border-bottom: 1px solid #e1e5e9;
+}
+
+.nav-tabs {
+  display: flex;
+  gap: 0;
+}
+
+.nav-tab {
+  padding: 1rem 1.5rem;
+  background: none;
+  border: none;
+  border-bottom: 3px solid transparent;
+  cursor: pointer;
+  font-weight: 600;
+  color: #666;
+  transition: all 0.3s;
+}
+
+.nav-tab:hover {
+  color: #667eea;
+  background: #f8f9fa;
+}
+
+.nav-tab.active {
+  color: #667eea;
+  border-bottom-color: #667eea;
+  background: #f8f9fa;
+}
+
+/* Dashboard Styles */
+.dashboard {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  padding: 2rem;
+}
+
+.dashboard-card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+  text-align: center;
+  transition: transform 0.3s;
+}
+
+.dashboard-card:hover {
+  transform: translateY(-5px);
+}
+
+.dashboard-card h3 {
+  font-size: 2rem;
+  color: #667eea;
+  margin-bottom: 0.5rem;
+}
+
+.dashboard-card p {
+  color: #666;
+  font-weight: 600;
+}
+
+/* Content Section Styles */
+.content-section {
+  display: none;
+  padding: 2rem;
+}
+
+.content-section.active {
+  display: block;
+}
+
+.section-card {
+  background: white;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+  margin-bottom: 2rem;
+}
+
+.section-card h3 {
+  color: #333;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #e1e5e9;
+}
+
+/* Form Styles */
+.form-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.form-row input,
+.form-row select,
+.form-row textarea {
+  padding: 10px 12px;
+  border: 2px solid #e1e5e9;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.form-row input:focus,
+.form-row select:focus,
+.form-row textarea:focus {
+  outline: none;
+  border-color: #667eea;
+}
+
+/* Designation Filter Styles */
+.designation-filter {
+  background: linear-gradient(135deg, #28a745, #20c997);
+  color: white;
+  padding: 1.5rem;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+}
+
+.designation-filter h4 {
+  margin-bottom: 1rem;
+  color: white;
+}
+
+.designation-filter select {
+  background: white;
+  color: #333;
+  border: 2px solid #20c997;
+  padding: 10px 15px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.filter-info {
+  background: rgba(255, 255, 255, 0.2);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  padding: 1rem;
+  margin: 1rem 0;
+  color: white;
+  backdrop-filter: blur(10px);
+}
+
+/* Button Styles */
+.btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  margin: 5px;
+  font-size: 14px;
+}
+
+.btn-primary {
+  background: #667eea;
+  color: white;
+}
+
+.btn-primary:hover {
+  background: #5a6fd8;
+  transform: translateY(-2px);
+}
+
+.btn-success {
+  background: #28a745;
+  color: white;
+}
+
+.btn-success:hover {
+  background: #218838;
+  transform: translateY(-2px);
+}
+
+.btn-warning {
+  background: #ffc107;
+  color: #212529;
+}
+
+.btn-warning:hover {
+  background: #e0a800;
+  transform: translateY(-2px);
+}
+
+.btn-danger {
+  background: #dc3545;
+  color: white;
+}
+
+.btn-danger:hover {
+  background: #c82333;
+  transform: translateY(-2px);
+}
+
+.btn-info {
+  background: #17a2b8;
+  color: white;
+}
+
+.btn-info:hover {
+  background: #138496;
+  transform: translateY(-2px);
+}
+
+.button-group {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* Employee Management Styles */
+.employee-management-actions {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+/* Table Styles */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.data-table th,
+.data-table td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #e1e5e9;
+}
+
+.data-table th {
+  background: #f8f9fa;
+  font-weight: 600;
+  color: #333;
+}
+
+.data-table tr:hover {
+  background: #f8f9fa;
+}
+
+/* Print Page Styles */
+.print-page {
+  background: white;
+  margin: 1rem 0;
+  padding: 0;
+  border-radius: 0;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  page-break-after: always;
+  min-height: calc(100vh - 40mm);
+  position: relative;
+}
+
+.print-constant-header {
+  text-align: center;
+  margin-bottom: 5mm;
+  padding-bottom: 3mm;
+  border-bottom: 1px solid #000;
+  font-size: 12pt;
+  font-weight: bold;
+  color: #000;
+}
+
+.print-page-footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 15mm;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 10pt;
+  border-top: 1pt solid #000;
+  padding-top: 3mm;
+  background: white;
+  color: #000;
+}
+
+/* Compact Print Table for All Staff on One Page */
+.compact-print-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 6pt;
+  margin: 0;
+  border: 1px solid #000;
+  margin-bottom: 20mm;
+  table-layout: fixed;
+}
+
+.compact-print-table th,
+.compact-print-table td {
+  border: 0.5px solid #000;
+  padding: 1px;
+  text-align: center;
+  vertical-align: middle;
+  line-height: 1;
+  overflow: hidden;
+  word-wrap: break-word;
+}
+
+.compact-print-table th {
+  background: white;
+  color: #000;
+  font-weight: bold;
+  font-size: 7pt;
+}
+
+.compact-print-table .date-col {
+  width: 8mm;
+  font-weight: bold;
+  font-size: 6pt;
+}
+
+.compact-print-table .employee-col {
+  width: 25mm;
+  font-weight: bold;
+  font-size: 6pt;
+  text-align: left;
+  padding-left: 2px;
+}
+
+.compact-print-table .time-cell {
+  width: 4mm;
+  font-size: 12px;
+  font-weight: normal;
+}
+
+.compact-print-table .in-time {
+  background: #f0f8ff;
+}
+
+.compact-print-table .out-time {
+  background: #fff8f0;
+}
+
+/* Alert Styles */
+.alert {
+  padding: 12px 16px;
+  margin: 10px 0;
+  border-radius: 6px;
+  border-left: 4px solid;
+}
+
+.alert-success {
+  background: #d4edda;
+  color: #155724;
+  border-left-color: #28a745;
+}
+
+.alert-error,
+.alert-danger {
+  background: #f8d7da;
+  color: #721c24;
+  border-left-color: #dc3545;
+}
+
+.alert-warning {
+  background: #fff3cd;
+  color: #856404;
+  border-left-color: #ffc107;
+}
+
+.alert-info {
+  background: #cce8f4;
+  color: #0c5460;
+  border-left-color: #17a2b8;
+}
+
+/* Loading Styles */
+.loading {
+  text-align: center;
+  padding: 2rem;
+  color: #666;
+  font-size: 1.1rem;
+}
+
+/* Modal Styles */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(5px);
+}
+
+.modal-content {
+  background: white;
+  margin: 5% auto;
+  padding: 2rem;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 600px;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.close:hover {
+  color: #000;
+}
+
+/* Enhanced Styles */
+.summary-section {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 1.5rem;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+}
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.action-buttons {
+  text-align: center;
+  padding: 1rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+  margin: 1rem 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.edit-form {
+  background: #f8f9fa;
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin: 1rem 0;
+  border-left: 4px solid #17a2b8;
+}
+
+.attendance-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.employee-card {
+  background: white;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-left: 4px solid #28a745;
+}
+
+.time-display {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.5rem;
+}
+
+.time-in {
+  color: #28a745;
+  font-weight: bold;
+}
+
+.time-out {
+  color: #dc3545;
+  font-weight: bold;
+}
+
+/* Quick Edit Panel */
+.quick-edit-panel {
+  background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+  border: 2px solid #ffc107;
+  border-radius: 8px;
+  padding: 1rem;
+  margin: 1rem 0;
+}
+
+.quick-edit-panel h4 {
+  color: #856404;
+  margin-bottom: 1rem;
+}
+
+/* Manual Entry Panel */
+.manual-entry-panel {
+  background: linear-gradient(135deg, #d1ecf1, #a3d5db);
+  border: 2px solid #17a2b8;
+  border-radius: 8px;
+  padding: 1rem;
+  margin: 1rem 0;
+}
+
+.manual-entry-panel h4 {
+  color: #0c5460;
+  margin-bottom: 1rem;
+}
+
+/* No Print Class */
+.no-print {
+  display: block;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .header {
+    padding: 1rem;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .nav-tabs {
+    flex-wrap: wrap;
+  }
+
+  .nav-tab {
+    padding: 0.8rem 1rem;
+    font-size: 14px;
+  }
+
+  .dashboard {
+    grid-template-columns: 1fr;
+    padding: 1rem;
+  }
+
+  .content-section {
+    padding: 1rem;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .button-group {
+    flex-direction: column;
+  }
+
+  .employee-management-actions {
+    flex-direction: column;
+  }
+
+  .summary-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Staff List Table Styles */
+.staff-list-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  font-size: 12px;
+}
+
+.staff-list-table th,
+.staff-list-table td {
+  padding: 10px;
+  border: 1px solid #000;
+  text-align: left;
+}
+
+.staff-list-table th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+}
+
+@media print {
+  .staff-list-table {
+    font-size: 10pt;
+  }
+
+  .staff-list-table th,
+  .staff-list-table td {
+    padding: 8px;
+  }
+}
+
+/* OPTIMIZED PRINT STYLES FOR A4 PORTRAIT - ALL STAFF ON ONE PAGE */
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 10mm 8mm 15mm 8mm;
+  }
+
+  * {
+    -webkit-print-color-adjust: exact !important;
+    accent-color: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  body {
+    background: white !important;
+    font-family: Arial, sans-serif !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    color: #000 !important;
+    font-size: 8pt !important;
+  }
+
+  /* Hide all non-print elements */
+  body * {
+    visibility: hidden;
+  }
+
+  /* Show only print elements */
+  .print-page,
+  .print-page *,
+  .print-page-footer,
+  .print-page-footer * {
+    visibility: visible !important;
+  }
+
+  /* Hide non-print elements completely */
+  .no-print,
+  .attendance-status-dropdown {
+    display: none !important;
+    visibility: hidden !important;
+  }
+
+  /* OPTIMIZED PRINT PAGE LAYOUT */
+  .print-page {
+    position: relative !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 2mm 0 20mm 0 !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    page-break-after: always !important;
+    page-break-inside: avoid !important;
+    background: white !important;
+    color: #000 !important;
+    min-height: calc(100vh - 25mm) !important;
+  }
+
+  /* COMPACT HEADER */
+  .print-constant-header {
+    text-align: center !important;
+    margin-bottom: 3mm !important;
+    padding-bottom: 2mm !important;
+    border-bottom: 1pt solid #000 !important;
+    font-size: 10pt !important;
+    font-weight: bold !important;
+    color: #000 !important;
+    background: white !important;
+    line-height: 1.2 !important;
+  }
+
+  /* FIXED FOOTER */
+  .print-page-footer {
+    position: fixed !important;
+    bottom: 8mm !important;
+    left: 8mm !important;
+    right: 8mm !important;
+    height: 12mm !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    font-size: 9pt !important;
+    font-weight: bold !important;
+    border-top: 1pt solid #000 !important;
+    padding-top: 2mm !important;
+    background: white !important;
+    color: #000 !important;
+    z-index: 1000 !important;
+  }
+
+  /* ULTRA COMPACT TABLE FOR ALL STAFF ON ONE PAGE */
+  .compact-print-table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    font-size: 5pt !important;
+    margin: 0 0 25mm 0 !important;
+    border: 1pt solid #000 !important;
+    background: white !important;
+    color: #000 !important;
+    table-layout: fixed !important;
+  }
+
+  .compact-print-table th,
+  .compact-print-table td {
+    border: 0.3pt solid #000 !important;
+    padding: 0.5mm !important;
+    text-align: center !important;
+    vertical-align: middle !important;
+    line-height: 1 !important;
+    background: white !important;
+    color: #000 !important;
+    font-size: 5pt !important;
+    word-wrap: break-word !important;
+    overflow: hidden !important;
+  }
+
+  /* Add this to also center the simple table cells */
+  .simple-print-table td {
+    text-align: center !important;
+  }
+
+  .compact-print-table th {
+    background: white !important;
+    font-weight: bold !important;
+    font-size: 6pt !important;
+    color: #000 !important;
+    border: 1pt solid #000 !important;
+  }
+
+  .compact-print-table .date-col {
+    width: 6mm !important;
+    font-weight: bold !important;
+    background: white !important;
+    color: #000 !important;
+    font-size: 5pt !important;
+  }
+
+  .compact-print-table .employee-col {
+    width: 20mm !important;
+    font-weight: bold !important;
+    font-size: 5pt !important;
+    background: white !important;
+    color: #000 !important;
+    text-align: center !important;
+    padding-left: 1mm !important;
+  }
+
+  .compact-print-table .time-cell {
+    width: 3mm !important;
+    font-size: 12px !important;
+    font-weight: normal !important;
+    background: white !important;
+    color: #000 !important;
+    text-align: center !important;
+  }
+
+  .compact-print-table .in-time {
+    background: white !important;
+    color: #000 !important;
+    text-align: center !important;
+  }
+
+  .compact-print-table .out-time {
+    background: white !important;
+    color: #000 !important;
+    text-align: center !important;
+  }
+
+  /* Ensure proper page breaks */
+  .print-page:last-child {
+    page-break-after: avoid !important;
+  }
+}
