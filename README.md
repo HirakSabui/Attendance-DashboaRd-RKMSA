@@ -1,4 +1,4 @@
-# Staff Attendance Management System (Ramakrishna Mission Shilpapitha)
+# Real time Staff Attendance Management System (Ramakrishna Mission Shilpapitha) (rkmsa.in)(Username: Admin and Password: FIPL)
 
 A lightweight front-end prototype for managing staff attendance, manual entries, and employee records. This repository contains an HTML/CSS/JS based dashboard intended for local use or as a starting point for integration with a backend.
 
